@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      div {
+        width: 50px;
+        height: 50px;
+      }
+      .container {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+      }
+    </style>
+    <p>Klik az elsőre és lesz egyfajta szivárvány.</p>
+    <p>Klik az másodikra és lesz másfajta szivárvány.</p>
+    <p>Klik az harmadikra és váltogatja a szivárványokat.</p>
+    <p>Klik az hatodik, hetedik, nyolcadikra, kilencedikre és mozognak.</p>
+    <p>Klik az utolsóra, ha tudsz.</p>
+    <p class="catchthis">A többit most már te is tudod programozni!</p>
+    <div class="container">
+      <div class="catchit"></div>
+      <div class="catchit"></div>
+      <div class="catchit"></div>
+      <div class="catchit"></div>
+      <div class="catchthis"></div>
+      <div class="catchthis"></div>
+      <div class="catchthis"></div>
+      <div class="catchthis"></div>
+      <div class="catchit"></div>
+      <div class="catchit"></div>
+      <div id="catchit"></div>
+    </div>
+    <script>
+      /*
+        Változó deklarálás let, vagy var. A különbség a let csak {} zárójlelek között és, a var pedig azon kívül is eléred.
+        Ha olyan változó kell, amit több helyen is használsz, akkor érdemes var-al definiálni, ha csak egyetlen helyen kell, akkor lehet let-tel.
+        ha olnya változó kell, ami örökre megtartja értékeét, akkor a const lehet a jó választás, mert véleletnül sem tudsz új értéket adni neki. */
+      let a;
+      var b;
+      let c = 5;
+      var d = 6;
+      const e = 10;
+
+      /* console.log() a programozó legjobb barátja. Böngészőben f12 és a consolba nézd az eredményt! */
+      console.log("Hello Zsót!");
+
+      /* Matekoljunk */
+      a = c + d;
+      console.log("a értéke: ", a);
+      b = a;
+      console.log("b értéke: ", b);
+      a = d;
+      console.log("a megváltozott: ", a);
+      console.log("e megváltozott: ", e);
+      //e=11; //hibát dob, ha kiveszer a //-t a sor elejéről, mert nem kaphat új értéket a konstans
+
+      /********************************/
+      /* szedjük össze a dom elemeket */
+      /********************************/
+
+      /* minden elem, ami cachit classal bír, kell a pont szükséges, mert a queryselector abból tudja, hogy classra  keressen */
+      const classChatchits = document.querySelectorAll(".catchit");
+      /* minden div, de tényleg, mindegy, hogy milyen struktúramélységben van */
+      const allDivs = document.querySelectorAll("div");
+      /* az első elem, ami cachthis classal bír */
+      const firstCathchThis = document.querySelector(".catchthis");
+      /* az egyetlen elem, ami cachthis idval bír, mivel idból mindig egyedit kell adni */
+      const idIsCatchit = document.getElementById("catchit");
+      /* minden elem, ami cachit classal bír, kell itt a pont nem kell, mert a függvény a classre vadászik*/
+      const classIsAlsoChatchThese = document.getElementsByClassName(
+        "catchthis"
+      );
+      console.log("összes catchit class", classChatchits);
+      console.log("összes div class", allDivs);
+      console.log("első elem, ami cachthis classal bír", firstCathchThis);
+      console.log("egyetlen elem, ami cachthis idval bír", idIsCatchit);
+      console.log("összes catchit class", classIsAlsoChatchThese);
+
+      /* láthatod, hogy ez egy spáci tömb, ami nodelist névre hallgat */
+
+      /*******************************/
+      /* manipuláljuk a DOM lemeket! */
+      /*******************************/
+
+      /* itt kellett egy i változó, amivel a ciklus számát kalkulálom, ezt beadtam a DIV textContentjébe ezt szebben is meg lehet csinálni, de azt még lehet, hogy nem értenéd... bocs itt megfigyelheted, hogy egy névtelen függvény kap egy bemenetet, amit az eredei változó nevének egyes számú változtának neveztem el. Az a minden egyse iterációban aktuális elem.  */
+      let i = 0;
+      classChatchits.forEach(function (classChatchit) {
+        classChatchit.textContent = i;
+        i++;
+      });
+
+      /* igen CSS dolgokat is lehet manipulálni! */
+      firstCathchThis.style.backgroundColor = "#ff0000";
+      idIsCatchit.style.backgroundColor = "#00FF00";
+
+      /* ez egy tömb*/
+      let colors = [
+        "blue",
+        "lightGrey",
+        "pink",
+        "orange",
+        "yellow",
+        "purple",
+        "cyan",
+        "brown",
+      ];
+
+      /* ez a hagyományosabb for ciklis, nem pedig for eachel, majd egyszer elmondom ez méirt nem jó megoldás! És igen ez az az i változó let, amit fentebb már egyszer definiáltam, és használtam, most új értékeket fog kapni */
+      for (i = 0; i < classChatchits.length; i++) {
+        classChatchits[i].style.backgroundColor = colors[i];
+      }
+
+      /* figyelni kell rá, ha új változót használsz, akkor a forban a változó elé kell egy let!! csak hogy összezavarjalak ez egy visszafelé számláló ciklus */
+      for (let j = classChatchits.length - 1; j >= 0; j--) {
+        console.log(j + " .szín", colors[j]);
+        classChatchits[j].style.backgroundColor =
+          colors[classChatchits.length - j];
+      }
+
+      /* így is lehet létrehozni ciklust, és ez a legjobb módszer talán, mert ezzel az összes elemen végigmész, nincs benne hibalehetőség*/
+      for (let div of allDivs) {
+        /* itt megnézem, hogy a class-jeik között ott van-e a catchit vagy (ctrl + W kétszer = || ez a vagy) és csak akkor adok hozzá egy bordert és alakítrom át őket border-box-ra, hogy a méretük ne változzon*/
+        if (
+          div.classList.contains("catchit") ||
+          div.classList.contains("catcthis")
+        ) {
+          div.style.boxSizing = "border-box";
+          div.style.border = "3px solid #ccc";
+        }
+      }
+
+      /* csináljunk függvényt az egyszerüség kedvéért a már fent elkészített ciklusokat használtam fel a két függvényhez */
+      function makeNiceRainbow() {
+        for (let j = classChatchits.length - 1; j >= 0; j--) {
+          // itt is lehet consol.logolni természetesen!
+          console.log(j + " .szín", colors[j]);
+          classChatchits[j].style.backgroundColor =
+            colors[classChatchits.length - j];
+        }
+      }
+
+      function makeAnotherRainbow() {
+        for (i = 0; i < classChatchits.length; i++) {
+          classChatchits[i].style.backgroundColor = colors[i];
+        }
+      }
+
+      /* adjunk hozzá az első elemhez egy eventLisenert ha ráklikkel, fusson le az első függvény */
+      classChatchits[0].addEventListener("click", function () {
+        makeNiceRainbow();
+        console.log("első elem klikkelve");
+      });
+
+      /* adjunk hozz az utolsó elemhez, amelyiknek id-ja van egy másik eventLisenert ha ráklikkel, fusson le az első függvény */
+      classChatchits[1].addEventListener("click", function () {
+        makeAnotherRainbow();
+        console.log("második elem klikkelve");
+      });
+
+      /* harmadik elemet okosítsuk fel, hozzon egy döntést! */
+      classChatchits[2].addEventListener("click", function () {
+        console.log(this);
+        /* mi a tököm az a this??? A this egy ilyan spéci változó, amivel az elemek önmagukra hivatkozhatnak egy adott függvényen, cikluson belül az objektumoknál lesz nagy jelentősége majd! */
+        if (this.dataset.toggle == "1") {
+          makeAnotherRainbow();
+          this.dataset.toggle = "2";
+        } else {
+          makeNiceRainbow();
+          this.dataset.toggle = "1";
+        }
+        /* itt meg mi a lófasz történik? megnézzük, hogy van-e data-toggle eleme a harmadik divnek, ha van és annak értéke "1" string, akkor az makeAnotherRainbow() függvény fut le. Ha értéke más, mint "1", akkor a makeNiceRainbow() függvény fut le.
+
+        Így akkor már az is egyértelmű, hogy miért kellenek a függvények. Ezeket az utasítás csomagokat egyszer kell megírni, és végtelenszer lehet használni!
+        */
+        console.log("harmadik elem klikkelve");
+      });
+    </script>
+    <style>
+      /* létrehozok két osztályt, amik csak lejjebb teszik az elemeket */
+      .moveBitDown {
+        transform: translateY(100px);
+      }
+      .moveMoreDown {
+        transform: translateY(200px);
+      }
+      /* és hozzáadok egy kis transition-t catchthis classhez*/
+      .catchthis {
+        transition: all 1s ease-in-out;
+      }
+    </style>
+
+    <script>
+      /* adjunk hozzá még egy kis script-et, klikkelj a fehérekre és lásd a csodát! */
+      for (let catchit of classIsAlsoChatchThese) {
+        catchit.addEventListener("click", function () {
+          moveDown(catchit);
+        });
+      }
+
+      function moveDown(div) {
+        console.log(div);
+        /* számoljuk le hányszor kattinottuk rája, márnmint nem a rája, de te rá */
+        div.textContent = Number(div.textContent) + 1;
+
+        div.style.color = "white";
+        div.style.backgroundColor = "black";
+
+        console.log("click");
+
+        /* ha fent van menjen lejebb, ha lent van menjen még lejjeb, ha meg már nagyon lent van, menjen vissza */
+        if (
+          div.classList.contains("moveMoreDown") &&
+          div.classList.contains("moveBitDown")
+        ) {
+          console.log("Gyere vissza!");
+          div.classList.remove("moveMoreDown");
+          div.classList.remove("moveBitDown");
+        } else if (div.classList.contains("moveBitDown")) {
+          console.log("Menj még lejjebb!");
+          div.classList.add("moveMoreDown");
+        } else {
+          console.log("Menj lejjebb!");
+          div.classList.add("moveBitDown");
+        }
+      }
+
+      /* Kezdődjön az ŐRÜLET!!! Kapdel a zöldet, ami nem is zöld!!!  */
+      idIsCatchit.addEventListener("mouseover", function () {
+        /* a this itt is az az elem amire klikkeltél */
+        console.log(this);
+        /* a telejes ablakszélesség és magasság megállapítása */
+        let maxX = window.innerWidth - 200;
+        let maxY = window.innerHeight - 200;
+        console.log(maxX, maxY);
+        console.log(this.offsetWidth, this.offsetHeight);
+        this.style.position = "absolute";
+        this.style.transition = "all 0.3s linear";
+        let red = 50 + Math.ceil(Math.random() * 127);
+        let green = 50 + Math.ceil(Math.random() * 127);
+        let blue = 50 + Math.ceil(Math.random() * 127);
+        /* a változókat egyszerűen "összeadod" a stringekkel, és kész a string, amiben a változó értéke benne van!!! */
+        this.style.backgroundColor =
+          "rgb(" + red + ", " + green + ", " + blue + ")";
+        this.style.borderRadius = Math.ceil(Math.random() * 50) + "%";
+        this.style.left = Math.ceil(Math.random() * maxX) + "px";
+        this.style.top = Math.ceil(Math.random() * maxY) + "px";
+
+        console.log(this.style.top, this.style.left);
+      });
+    </script>
+  </body>
+</html>
